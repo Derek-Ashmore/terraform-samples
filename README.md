@@ -2,6 +2,10 @@
 
 This project contains experiments using the Terraform product for scripting infrastructure.
 
+## Samples
+
+* first-sample -- Simple AWS instance creation
+
 ## Useful Discoveries
 
 This section contains useful tidbits of information that are **NOT** well documented in terraform documentation.
