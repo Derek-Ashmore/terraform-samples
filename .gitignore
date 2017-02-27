@@ -1,3 +1,4 @@
 # Terreform state files
 *.tfstate
 *.tfstate.backup
+.terraform
