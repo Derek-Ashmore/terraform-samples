@@ -15,9 +15,9 @@ This section contains useful tidbits of information that are **NOT** well docume
 
 Terraform will only acknowledge environment variables that following the naming convention TF_VAR_varName.  For example, TF_VAR_aws_key.
 
-> Environment variables are declared and used as normal variables. 
+> Environment variables are declared and used as normal variables.
 
-If I set environment variable TF_VAR_aws_key=ASDFDFSASDF, in the Terraform configuration, I must define the variable 
+If I set environment variable TF_VAR_aws_key=ASDFDFSASDF, in the Terraform configuration, I must define the variable
 before I can use it.  Any variables without a definition in the environment or declared default will be prompted.
 
 ```  
@@ -31,3 +31,11 @@ provider "aws" {
 }
 ```  
 
+### Module Organization
+
+Treat all scripts as modules.
+
+Don't be afraid to layer them with the lowest being the most granular and working up to the entire environment creation.
+
+The outer layer will be environment specific and just be one module call.  This call should specify all needed input so that nothing needs to be entered by the person
+executing the script.
