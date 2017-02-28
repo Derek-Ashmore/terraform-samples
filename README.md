@@ -39,3 +39,11 @@ Don't be afraid to layer them with the lowest being the most granular and workin
 
 The outer layer will be environment specific and just be one module call.  This call should specify all needed input so that nothing needs to be entered by the person
 executing the script.
+
+### Module not found error
+
+This is a misleading error.  Issue for following command for a clearer error message:
+
+```  
+terraform get
+```  
