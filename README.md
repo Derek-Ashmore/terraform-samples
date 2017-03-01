@@ -5,6 +5,7 @@ This project contains experiments using the Terraform product for scripting infr
 ## Samples
 
 * first-sample -- Simple AWS instance creation
+* terraform-modules\aws-vpc -- Provides a standard VPC with public, dmz, and private subnets spread across three availability zones.
 
 ## Useful Discoveries
 
