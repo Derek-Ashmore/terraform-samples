@@ -17,6 +17,10 @@ You need the following to run these samples:
 
 ### Running the Samples
 
+To start, AWS keys are passed as environment variables.  Before any of these configurations will work,
+execute setkeys.sh or setkeys.bat in the same command line you intend to execute Terraform configurations.
+these scripts will prompt you for the AWS key and secret key.
+
 Establish a command prompt and make your directory the directory of the module you want to run. Directory
 terraform-module-tests contain modules are a convenient way to run the sample modules as they supply inputs automatically
 instead of depending on you for manual input.
