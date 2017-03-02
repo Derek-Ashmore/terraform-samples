@@ -1,3 +1,6 @@
+/*
+ * Sample creates an instance in AWS.
+ */
 
 variable "aws_region" {
 	default = "us-east-1"
@@ -14,14 +17,14 @@ variable "instance_name" {
 provider "aws" {
   access_key = "${var.aws_key}"
   secret_key = "${var.aws_secret_key}"
-  region     = "${var.aws_region}" 
+  region     = "${var.aws_region}"
 }
 
 resource "aws_instance" "example" {
   ami           = "ami-0d729a60"
   instance_type = "t2.micro"
   subnet_id  = "${var.subnet_id}"
-  
+
   tags {
     "Name" = "${var.instance_name}"
   }

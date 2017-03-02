@@ -1,3 +1,11 @@
+/*
+ * aws-vpc - Terreform to create and configure an AWS VPC instance.
+ *
+ * The VPC has nine subnets spread across three availability zones.
+ *   public subnets - are accessible from the internet and are designed for firewalls.
+ *   dmz subnets - are accessible from public subnets and contains application servers and jump boxes.
+ *   private subnets - are accessible from dmz subnets and contain resources like database servers and message queue servers.
+ */
 
 provider "aws" {
   access_key = "${var.aws_key}"
@@ -5,6 +13,7 @@ provider "aws" {
   region     = "${var.aws_region}"
 }
 
+# List of currently defined availability zones in the current region.
 data "aws_availability_zones" "available" {}
 
 # Define VPC

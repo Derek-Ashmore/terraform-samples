@@ -4,8 +4,39 @@ This project contains experiments using the Terraform product for scripting infr
 
 ## Samples
 
-* first-sample -- Simple AWS instance creation
+* terraform-modules\aws-first-sample -- Simple AWS instance creation
 * terraform-modules\aws-vpc -- Provides a standard VPC with public, dmz, and private subnets spread across three availability zones.
+
+> Warning:  These scripts create and start cloud resources!  If you're running them to experiment, terminate what you create to conserve costs after you're through.
+
+### Prerequisites
+
+You need the following to run these samples:
+* AWS Account with a generated AWS key and secret key and privs to create VPCs, route tables, etc.
+* Terraform installed and in your path
+
+### Running the Samples
+
+Establish a command prompt and make your directory the directory of the module you want to run. Directory
+terraform-module-tests contain modules are a convenient way to run the sample modules as they supply inputs automatically
+instead of depending on you for manual input.
+
+> Set your directory to terraform-module-tests/aws-first-sample
+
+Execute this command to display the actions Terraform "plans" to take (e.g. create an instance):
+```  
+terraform plan
+```  
+
+Execute this command to affect (e.g. physically create) the displayed changes:
+```  
+terraform apply
+```  
+
+Execute this command to show the displayed changes:
+```  
+terraform show
+```  
 
 ## Useful Discoveries
 

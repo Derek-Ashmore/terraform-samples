@@ -1,3 +1,7 @@
+/*
+ * Variables defined for the aws-vpc module.
+ */
+
 variable "aws_key" {}
 variable "aws_secret_key" {}
 variable "aws_region" {
