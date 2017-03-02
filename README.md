@@ -65,12 +65,9 @@ provider "aws" {
 
 ### Module Organization
 
-Treat all scripts as modules.
-
-Don't be afraid to layer them with the lowest being the most granular and working up to the entire environment creation.
-
-The outer layer will be environment specific and just be one module call.  This call should specify all needed input so that nothing needs to be entered by the person
-executing the script.
+Use environment specific modules to manage different environments. Leaving module execution relying on manual input
+introduces a possibility of error.  In other words, if you've a Terraform configuration that manages VPC creation, have
+separate modules for prod, dev, QA, and any of your other environments that execute that VPC configuration.
 
 ### Module not found error
 
