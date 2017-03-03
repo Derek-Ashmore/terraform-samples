@@ -67,6 +67,28 @@ provider "aws" {
 }
 ```  
 
+### Data source references are quirky
+
+> Referencing individual elements must use the 'element' interpolation
+
+```  
+data "aws_subnet" "allSubnets" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+}
+....
+subnet_id = "${element(data.aws_subnet.allSubnets.id, count.index)}"
+```  
+
+> Syntax for converting a data source collection as a list is NOT intuitive
+
+```  
+data "aws_subnet" "allSubnets" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+}
+....
+subnet_ids = ["${data.aws_subnet.allSubnets.id}"]
+```  
+
 ### Module Organization
 
 Use environment specific modules to manage different environments. Leaving module execution relying on manual input
