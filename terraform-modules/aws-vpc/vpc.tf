@@ -55,7 +55,7 @@ resource "aws_subnet" "public" {
 
   tags {
       Name = "${var.vpc_name}.public${count.index}"
-      Type = "Public"
+      Scope = "Public"
   }
 }
 
@@ -69,7 +69,7 @@ resource "aws_subnet" "dmz" {
 
   tags {
       Name = "${var.vpc_name}.dmz${count.index}"
-      Type = "DMZ"
+      Scope = "DMZ"
   }
 }
 
@@ -83,17 +83,75 @@ resource "aws_subnet" "private" {
 
   tags {
       Name = "${var.vpc_name}.private${count.index}"
-      Type = "Private"
+      Scope = "Private"
   }
 }
 
-data "aws_subnet" "subnets" {
+data "aws_subnet" "allSubnets" {
   vpc_id = "${aws_vpc.newVPC.id}"
 }
 
 # Associate the route table to all subnets.
 resource "aws_route_table_association" "routeTableAssociation" {
   count = 9  # Boo!  The 'length' interpolation doesn't work with 'data' variables. Had the list been a 'var', it would have.
-  subnet_id = "${element(data.aws_subnet.subnets.id, count.index)}"
+  subnet_id = "${element(data.aws_subnet.allSubnets.id, count.index)}"
   route_table_id = "${aws_route_table.allSubnetsRouteTable.id}"
+}
+
+# Find all private subnets
+data "aws_subnet" "privateSubnets" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+  filter {
+    name = "tag:Scope"
+    values = ["Private"]
+  }
+}
+
+# Define Network Acl for private subnets
+resource "aws_network_acl" "privateSubnetsNetworkACL" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+  subnet_ids = ["${data.aws_subnet.privateSubnets.id}"]
+  tags {
+      Name = "${var.vpc_name}.privateSubnetsNetworkACL"
+      Scope = "Private"
+  }
+
+  egress {
+    protocol = "all"
+    rule_no = 100
+    action = "allow"
+    cidr_block =  "0.0.0.0/0"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Part 1: Allow all inbound traffic from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
+  ingress {
+    protocol = "all"
+    rule_no = 100
+    action = "allow"
+    cidr_block =  "10.0.0.0/17"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Part 2: Allow all inbound traffic from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
+  ingress {
+    protocol = "all"
+    rule_no = 200
+    action = "allow"
+    cidr_block =  "10.0.128.0/18"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Deny all inbound traffic **NOT** from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
+  ingress {
+    protocol = "all"
+    rule_no = 300
+    action = "deny"
+    cidr_block =  "0.0.0.0/18"
+    from_port = 0
+    to_port = 65535
+  }
 }
