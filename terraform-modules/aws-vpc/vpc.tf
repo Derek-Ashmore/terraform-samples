@@ -155,3 +155,81 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
     to_port = 65535
   }
 }
+
+# Find all DMZ subnets
+data "aws_subnet" "dmzSubnets" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+  filter {
+    name = "tag:Scope"
+    values = ["DMZ"]
+  }
+}
+
+# Define Network Acl for DMZ subnets
+resource "aws_network_acl" "dmzSubnetsNetworkACL" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+  subnet_ids = ["${data.aws_subnet.dmzSubnets.id}"]
+  tags {
+      Name = "${var.vpc_name}.DmzSubnetsNetworkACL"
+      Scope = "DMZ"
+  }
+
+  egress {
+    protocol = "all"
+    rule_no = 100
+    action = "allow"
+    cidr_block =  "0.0.0.0/0"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Part 1: Allow all inbound traffic from DMZ subnets (10.0.96.0 - 10.0.191.255)
+  ingress {
+    protocol = "all"
+    rule_no = 100
+    action = "allow"
+    cidr_block =  "10.0.96.0/19"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Part 2: Allow all inbound traffic from DMZ subnets (10.0.96.0 - 10.0.191.255)
+  ingress {
+    protocol = "all"
+    rule_no = 200
+    action = "allow"
+    cidr_block =  "10.0.128.0/18"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Part 1: Allow all inbound traffic from Public subnets (10.0.240.0 - 10.0.243.255)
+  ingress {
+    protocol = "all"
+    rule_no = 300
+    action = "allow"
+    cidr_block =  "10.0.240.0/21"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Part 2: Allow all inbound traffic from Public subnets (10.0.240.0 - 10.0.243.255)
+  ingress {
+    protocol = "all"
+    rule_no = 400
+    action = "allow"
+    cidr_block =  "10.0.248.0/22"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Deny all inbound traffic **NOT** from other DMZ/Public subnets (10.0.96.0 - 10.0.191.255, 10.0.240.0 - 10.0.251.255)
+  ingress {
+    protocol = "all"
+    rule_no = 500
+    action = "deny"
+    cidr_block =  "0.0.0.0/16"
+    from_port = 0
+    to_port = 65535
+  }
+}
