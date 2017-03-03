@@ -55,6 +55,7 @@ resource "aws_subnet" "public" {
 
   tags {
       Name = "${var.vpc_name}.public${count.index}"
+      Type = "Public"
   }
 }
 
@@ -68,6 +69,7 @@ resource "aws_subnet" "dmz" {
 
   tags {
       Name = "${var.vpc_name}.dmz${count.index}"
+      Type = "DMZ"
   }
 }
 
@@ -81,6 +83,7 @@ resource "aws_subnet" "private" {
 
   tags {
       Name = "${var.vpc_name}.private${count.index}"
+      Type = "Private"
   }
 }
 
