@@ -19,11 +19,6 @@ variable "cidr_block_vpc_suffix" {
 	default = "/16"
 }
 
-/*variable "cidr_block_public_subnet_suffix" {
-	description = "CIDR block suffix (two nodes plus slash) for public subnets"
-	default = ".240.0/20"
-}*/
-
 variable "cidr_block_public_subnet_segment_suffix_list" {
   type    = "list"
 	description = "CIDR block suffix (two nodes plus slash) for individual public subnets"
