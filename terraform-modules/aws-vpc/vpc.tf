@@ -150,7 +150,7 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
     protocol = "all"
     rule_no = 300
     action = "deny"
-    cidr_block =  "0.0.0.0/18"
+    cidr_block =  "0.0.0.0/16"
     from_port = 0
     to_port = 65535
   }
