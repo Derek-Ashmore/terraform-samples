@@ -126,27 +126,6 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
     to_port = 65535
   }
 
-/*
-  # Part 1: Allow all inbound traffic from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
-  ingress {
-    protocol = "all"
-    rule_no = 100
-    action = "allow"
-    cidr_block =  "10.0.0.0/17"
-    from_port = 0
-    to_port = 65535
-  }
-
-  # Part 2: Allow all inbound traffic from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
-  ingress {
-    protocol = "all"
-    rule_no = 200
-    action = "allow"
-    cidr_block =  "10.0.128.0/18"
-    from_port = 0
-    to_port = 65535
-  }
-*/
   # Deny all inbound traffic **NOT** from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
   ingress {
     protocol = "all"
@@ -207,36 +186,6 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
     from_port = 0
     to_port = 65535
   }
-/*
-  # Part 2: Allow all inbound traffic from DMZ subnets (10.0.96.0 - 10.0.191.255)
-  ingress {
-    protocol = "all"
-    rule_no = 200
-    action = "allow"
-    cidr_block =  "10.0.128.0/18"
-    from_port = 0
-    to_port = 65535
-  }
-
-  # Part 1: Allow all inbound traffic from Public subnets (10.0.240.0 - 10.0.243.255)
-  ingress {
-    protocol = "all"
-    rule_no = 300
-    action = "allow"
-    cidr_block =  "10.0.240.0/21"
-    from_port = 0
-    to_port = 65535
-  }
-
-  # Part 2: Allow all inbound traffic from Public subnets (10.0.240.0 - 10.0.243.255)
-  ingress {
-    protocol = "all"
-    rule_no = 400
-    action = "allow"
-    cidr_block =  "10.0.248.0/22"
-    from_port = 0
-    to_port = 65535
-  }*/
 
   # Deny all inbound traffic **NOT** from other DMZ/Public subnets (10.0.96.0 - 10.0.191.255, 10.0.240.0 - 10.0.251.255)
   ingress {
