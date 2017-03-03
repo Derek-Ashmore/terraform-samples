@@ -116,6 +116,7 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
       Scope = "Private"
   }
 
+  # Allow outbound traffic everywhere
   egress {
     protocol = "all"
     rule_no = 100
@@ -174,6 +175,7 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
       Scope = "DMZ"
   }
 
+  # Allow outbound traffic everywhere
   egress {
     protocol = "all"
     rule_no = 100
@@ -229,6 +231,45 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
     rule_no = 500
     action = "deny"
     cidr_block =  "0.0.0.0/16"
+    from_port = 0
+    to_port = 65535
+  }
+}
+
+# Find all DMZ subnets
+data "aws_subnet" "publicSubnets" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+  filter {
+    name = "tag:Scope"
+    values = ["Public"]
+  }
+}
+
+# Define Network Acl for Public subnets
+resource "aws_network_acl" "publicSubnetsNetworkACL" {
+  vpc_id = "${aws_vpc.newVPC.id}"
+  subnet_ids = ["${data.aws_subnet.publicSubnets.id}"]
+  tags {
+      Name = "${var.vpc_name}.PublicSubnetsNetworkACL"
+      Scope = "Public"
+  }
+
+  # Allow outbound traffic everywhere
+  egress {
+    protocol = "all"
+    rule_no = 100
+    action = "allow"
+    cidr_block =  "0.0.0.0/0"
+    from_port = 0
+    to_port = 65535
+  }
+
+  # Allow all inbound traffic from Everywhere
+  ingress {
+    protocol = "all"
+    rule_no = 100
+    action = "allow"
+    cidr_block =  "0.0.0.0/0"
     from_port = 0
     to_port = 65535
   }
