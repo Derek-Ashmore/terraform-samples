@@ -42,6 +42,11 @@ Execute this command to show the displayed changes:
 terraform show
 ```  
 
+Execute this command to terminate/delete the displayed changes:
+```  
+terraform destroy
+```  
+
 ## Useful Discoveries
 
 This section contains useful tidbits of information that are **NOT** well documented in terraform documentation.

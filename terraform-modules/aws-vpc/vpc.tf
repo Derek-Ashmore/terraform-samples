@@ -87,6 +87,7 @@ resource "aws_subnet" "private" {
   }
 }
 
+# List of all subnets in the VPC
 data "aws_subnet" "allSubnets" {
   vpc_id = "${aws_vpc.newVPC.id}"
 }
@@ -137,6 +138,7 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
   }
 }
 
+# Create ACL rules for private Subnet CIDR blocks.  Standard ACL rules with privateSubnetsNetworkACL.
 resource "aws_network_acl_rule" "privateSubnetsNetworkACLRules" {
   network_acl_id = "${aws_network_acl.privateSubnetsNetworkACL.id}"
   count = "${length(var.cidr_block_private_subnet_allowed_ingress_cidr_list)}"
@@ -198,6 +200,7 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
   }
 }
 
+# Create ACL rules for DMZ Subnet CIDR blocks.  Standard ACL rules with dmzSubnetsNetworkACL.
 resource "aws_network_acl_rule" "dmzSubnetsNetworkACLRules" {
   network_acl_id = "${aws_network_acl.dmzSubnetsNetworkACL.id}"
   count = "${length(var.cidr_block_dmz_subnet_allowed_ingress_cidr_list)}"
@@ -210,7 +213,7 @@ resource "aws_network_acl_rule" "dmzSubnetsNetworkACLRules" {
   to_port = 65535
 }
 
-# Find all DMZ subnets
+# Find all Public subnets
 data "aws_subnet" "publicSubnets" {
   vpc_id = "${aws_vpc.newVPC.id}"
   filter {
