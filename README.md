@@ -74,25 +74,12 @@ provider "aws" {
 
 ### Data source references are quirky
 
-> Referencing individual elements must use the 'element' interpolation
+> Not all data sources support list returns
 
-```  
-data "aws_subnet" "allSubnets" {
-  vpc_id = "${aws_vpc.newVPC.id}"
-}
-....
-subnet_id = "${element(data.aws_subnet.allSubnets.id, count.index)}"
-```  
-
-> Syntax for converting a data source collection as a list is NOT intuitive
-
-```  
-data "aws_subnet" "allSubnets" {
-  vpc_id = "${aws_vpc.newVPC.id}"
-}
-....
-subnet_ids = ["${data.aws_subnet.allSubnets.id}"]
-```  
+Most data sources **require** a unique result or they will error out.  At least with the AWS provider,
+those data sources ending in "s" will support multiple object returns while those that don't won't. For
+example, 'aws_subnet' requires a unique return while 'aws_availability_zones' will return
+a list.
 
 ### Module Organization
 
