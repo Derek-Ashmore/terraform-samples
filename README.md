@@ -81,6 +81,10 @@ those data sources ending in "s" will support multiple object returns while thos
 example, 'aws_subnet' requires a unique return while 'aws_availability_zones' will return
 a list.
 
+> Data source returns what is physically present, not what's "planned" in your template.
+
+If it doesn't physically exist yet, a data source won't list it.
+
 ### Module Organization
 
 Use environment specific modules to manage different environments. Leaving module execution relying on manual input
