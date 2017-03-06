@@ -18,7 +18,7 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
     action = "allow"
     cidr_block =  "0.0.0.0/0"
     from_port = 0
-    to_port = 65535
+    to_port = 0
   }
 
   # Deny all inbound traffic **NOT** from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
@@ -28,7 +28,7 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
     action = "deny"
     cidr_block =  "0.0.0.0/16"
     from_port = 0
-    to_port = 65535
+    to_port = 0
   }
 }
 
@@ -42,7 +42,7 @@ resource "aws_network_acl_rule" "privateSubnetsNetworkACLRules" {
   rule_action = "allow"
   cidr_block = "${var.cidr_block_private_subnet_allowed_ingress_cidr_list[count.index]}"
   from_port = 0
-  to_port = 65535
+  to_port = 0
 }
 
 # Define Network Acl for DMZ subnets
@@ -61,7 +61,7 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
     action = "allow"
     cidr_block =  "0.0.0.0/0"
     from_port = 0
-    to_port = 65535
+    to_port = 0
   }
 
   # Part 1: Allow all inbound traffic from DMZ subnets (10.0.96.0 - 10.0.191.255)
@@ -71,7 +71,7 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
     action = "allow"
     cidr_block =  "10.0.96.0/19"
     from_port = 0
-    to_port = 65535
+    to_port = 0
   }
 
   # Deny all inbound traffic **NOT** from other DMZ/Public subnets (10.0.96.0 - 10.0.191.255, 10.0.240.0 - 10.0.251.255)
@@ -81,7 +81,7 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
     action = "deny"
     cidr_block =  "0.0.0.0/16"
     from_port = 0
-    to_port = 65535
+    to_port = 0
   }
 }
 
@@ -95,7 +95,7 @@ resource "aws_network_acl_rule" "dmzSubnetsNetworkACLRules" {
   rule_action = "allow"
   cidr_block = "${var.cidr_block_dmz_subnet_allowed_ingress_cidr_list[count.index]}"
   from_port = 0
-  to_port = 65535
+  to_port = 0
 }
 
 # Define Network Acl for Public subnets
@@ -114,7 +114,7 @@ resource "aws_network_acl" "publicSubnetsNetworkACL" {
     action = "allow"
     cidr_block =  "0.0.0.0/0"
     from_port = 0
-    to_port = 65535
+    to_port = 0
   }
 
   # Allow all inbound traffic from Everywhere
@@ -124,6 +124,6 @@ resource "aws_network_acl" "publicSubnetsNetworkACL" {
     action = "allow"
     cidr_block =  "0.0.0.0/0"
     from_port = 0
-    to_port = 65535
+    to_port = 0
   }
 }
