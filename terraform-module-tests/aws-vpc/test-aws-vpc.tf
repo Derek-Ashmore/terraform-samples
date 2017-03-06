@@ -9,3 +9,7 @@ module "aws-vpc" {
   aws_secret_key = "${var.aws_secret_key}"
   vpc_name = "TerraformVPC"
 }
+
+output "VpcId" {
+    value = "${module.aws-vpc.VpcId}"
+}

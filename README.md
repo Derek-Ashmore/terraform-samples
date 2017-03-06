@@ -5,7 +5,8 @@ This project contains experiments using the Terraform product for scripting infr
 ## Samples
 
 * terraform-modules\aws-first-sample -- Simple AWS instance creation
-* terraform-modules\aws-vpc -- Provides a standard VPC with public, dmz, and private subnets spread across three availability zones.
+* [terraform-modules\aws-vpc](./terraform-modules/aws-vpc/README.md) -- Provides a standard VPC with public, dmz, and private subnets spread across three availability zones.
+* [terraform-modules\aws-vpc-routes-acls](./terraform-modules/aws-vpc-routes-acls/README.md) -- Adds an internet gateway, routes, and network acls for a standard VPC.
 
 > Warning:  These scripts create and start cloud resources!  If you're running them to experiment, terminate what you create to conserve costs after you're through.
 
@@ -84,6 +85,11 @@ a list.
 > Data source returns what is physically present, not what's "planned" in your template.
 
 If it doesn't physically exist yet, a data source won't list it.
+
+> An enhancement to provide a 'aws_subnets' (plural) is desperately needed.
+
+Currently, the existing 'aws_subnet' data source only supports **one** return item - not a list.
+A lot of code blat in this sample could be avoided with such a creature.
 
 ### Module Organization
 
