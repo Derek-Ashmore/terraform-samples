@@ -7,6 +7,7 @@ This project contains experiments using the Terraform product for scripting infr
 * terraform-modules\aws-first-sample -- Simple AWS instance creation
 * [terraform-modules\aws-vpc](./terraform-modules/aws-vpc) -- Provides a standard VPC with public, dmz, and private subnets spread across three availability zones.
 * [terraform-modules\aws-vpc-routes-acls](./terraform-modules/aws-vpc-routes-acls) -- Adds an internet gateway, routes, and network acls for a standard VPC.
+* [terraform-modules\aws-jumpbox-linux](./terraform-modules/aws-jumpbox-linux) -- Adds a linux jump-box to the environment.
 
 > Warning:  These scripts create and start cloud resources!  If you're running them to experiment, terminate what you create to conserve costs after you're through.
 
