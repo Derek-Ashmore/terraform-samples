@@ -7,24 +7,21 @@ variable "aws_secret_key" {}
 variable "aws_region" {
 	default = "us-east-1"
 }
-variable "vpc_id" {
+/*variable "vpc_id" {
 	description = "ID of the VPC that will be outfitted with Routes and Network ACLs"
+}*/
+variable "vpc_name" {
+	description = "Unique name of the VPC that will be outfitted with Routes and Network ACLs"
 }
 
-variable "cidr_block_dmz_subnet_allowed_ingress_cidr_list" {
+variable "cidr_block_private_subnets" {
   type    = "list"
-	description = "CIDR blocks allowed into DMZ subnets"
-  default = ["10.0.96.0/19", "10.0.128.0/18", "10.0.240.0/21", "10.0.248.0/22"]
+	description = "CIDR blocks of Private subnets"
+  default = ["10.0.20.0/24", "10.0.21.0/24", "10.0.22.0/24"]
 }
 
-variable "cidr_block_private_subnet_segment_suffix_list" {
+variable "cidr_block_public_subnets" {
   type    = "list"
-	description = "CIDR block suffix (two nodes plus slash) for individual private subnets"
-  default = [".0.0/19", ".32.0/19", ".64.0/19"]
-}
-
-variable "cidr_block_private_subnet_allowed_ingress_cidr_list" {
-  type    = "list"
-	description = "CIDR blocks allowed into Private subnets"
-  default = ["10.0.0.0/17", "10.0.128.0/18"]
+	description = "CIDR blocks of Public subnets"
+  default = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
 }

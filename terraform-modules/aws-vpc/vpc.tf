@@ -32,6 +32,7 @@ resource "aws_subnet" "public" {
   vpc_id = "${aws_vpc.newVPC.id}"
   availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
   cidr_block = "${var.cidr_block_prefix}${var.cidr_block_public_subnet_segment_suffix_list[count.index]}"
+  map_public_ip_on_launch = "true"
 
   tags {
       Name = "${var.vpc_name}.public${count.index}"

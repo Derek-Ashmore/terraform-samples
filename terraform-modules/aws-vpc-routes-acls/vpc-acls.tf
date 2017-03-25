@@ -21,26 +21,26 @@ resource "aws_network_acl" "privateSubnetsNetworkACL" {
     to_port = 0
   }
 
-  # Deny all inbound traffic **NOT** from other private/DMZ subnets (10.0.0.0 - 10.0.191.255)
+  # Allow all by default
   ingress {
     protocol = "all"
     rule_no = 900
-    action = "deny"
-    cidr_block =  "0.0.0.0/16"
+    action = "allow"
+    cidr_block =  "0.0.0.0/0"
     from_port = 0
     to_port = 0
   }
 }
 
-# Create ACL rules for private Subnet CIDR blocks.  Standard ACL rules with privateSubnetsNetworkACL.
+# Deny direct access to private subnets from public subnets.
 resource "aws_network_acl_rule" "privateSubnetsNetworkACLRules" {
   network_acl_id = "${aws_network_acl.privateSubnetsNetworkACL.id}"
-  count = "${length(var.cidr_block_private_subnet_allowed_ingress_cidr_list)}"
+  count = "${length(var.cidr_block_public_subnets)}"
   rule_number = "2${count.index}0"
   egress = false
   protocol = "-1"
-  rule_action = "allow"
-  cidr_block = "${var.cidr_block_private_subnet_allowed_ingress_cidr_list[count.index]}"
+  rule_action = "deny"
+  cidr_block = "${var.cidr_block_public_subnets[count.index]}"
   from_port = 0
   to_port = 0
 }
@@ -64,36 +64,26 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
     to_port = 0
   }
 
-  # Part 1: Allow all inbound traffic from DMZ subnets (10.0.96.0 - 10.0.191.255)
-  ingress {
-    protocol = "all"
-    rule_no = 100
-    action = "allow"
-    cidr_block =  "10.0.96.0/19"
-    from_port = 0
-    to_port = 0
-  }
-
-  # Deny all inbound traffic **NOT** from other DMZ/Public subnets (10.0.96.0 - 10.0.191.255, 10.0.240.0 - 10.0.251.255)
+  # Allow all by default
   ingress {
     protocol = "all"
     rule_no = 900
-    action = "deny"
+    action = "allow"
     cidr_block =  "0.0.0.0/16"
     from_port = 0
     to_port = 0
   }
 }
 
-# Create ACL rules for DMZ Subnet CIDR blocks.  Standard ACL rules with dmzSubnetsNetworkACL.
+# Deny direct access to DMZ subnets from private subnets.
 resource "aws_network_acl_rule" "dmzSubnetsNetworkACLRules" {
   network_acl_id = "${aws_network_acl.dmzSubnetsNetworkACL.id}"
-  count = "${length(var.cidr_block_dmz_subnet_allowed_ingress_cidr_list)}"
+  count = "${length(var.cidr_block_private_subnets)}"
   rule_number = "2${count.index}0"
   egress = false
   protocol = "-1"
-  rule_action = "allow"
-  cidr_block = "${var.cidr_block_dmz_subnet_allowed_ingress_cidr_list[count.index]}"
+  rule_action = "deny"
+  cidr_block = "${var.cidr_block_private_subnets[count.index]}"
   from_port = 0
   to_port = 0
 }

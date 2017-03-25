@@ -22,11 +22,17 @@ variable "cidr_block_vpc_suffix" {
 variable "cidr_block_public_subnet_segment_suffix_list" {
   type    = "list"
 	description = "CIDR block suffix (two nodes plus slash) for individual public subnets"
-  default = [".248.0/22", ".244.0/22", ".240.0/22"]
+  default = [".0.0/24", ".1.0/24", ".2.0/24"]
 }
 
 variable "cidr_block_dmz_subnet_segment_suffix_list" {
   type    = "list"
 	description = "CIDR block suffix (two nodes plus slash) for individual dmz subnets"
-  default = [".96.0/19", ".128.0/19", ".160.0/19"]
+  default = [".10.0/24", ".11.0/24", ".12.0/24"]
+}
+
+variable "cidr_block_private_subnet_segment_suffix_list" {
+  type    = "list"
+	description = "CIDR block suffix (two nodes plus slash) for individual dmz subnets"
+  default = [".20.0/24", ".21.0/24", ".22.0/24"]
 }

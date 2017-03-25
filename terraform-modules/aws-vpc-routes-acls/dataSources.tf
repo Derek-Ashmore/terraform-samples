@@ -3,7 +3,15 @@
  */
 
 data "aws_vpc" "targetVpc" {
-   id = "${var.vpc_id}"
+   #id = "${var.vpc_id}"
+   filter {
+     name = "tag-value"
+     values = ["${var.vpc_name}"]
+   }
+   filter {
+     name = "tag-key"
+     values = ["Name"]
+   }
 }
 
 ####  We desparately need a 'aws-subnets' (plural) data source. This ugliness
