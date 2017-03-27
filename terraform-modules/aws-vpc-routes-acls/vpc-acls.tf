@@ -38,11 +38,11 @@ resource "aws_network_acl_rule" "privateSubnetsNetworkACLRules" {
   count = "${length(var.cidr_block_public_subnets)}"
   rule_number = "2${count.index}0"
   egress = false
-  protocol = "-1"
+  protocol = "tcp"
   rule_action = "deny"
   cidr_block = "${var.cidr_block_public_subnets[count.index]}"
   from_port = 0
-  to_port = 0
+  to_port = 1024
 }
 
 # Define Network Acl for DMZ subnets
@@ -69,7 +69,7 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
     protocol = "all"
     rule_no = 900
     action = "allow"
-    cidr_block =  "0.0.0.0/16"
+    cidr_block =  "0.0.0.0/0"
     from_port = 0
     to_port = 0
   }
@@ -81,11 +81,11 @@ resource "aws_network_acl_rule" "dmzSubnetsNetworkACLRules" {
   count = "${length(var.cidr_block_private_subnets)}"
   rule_number = "2${count.index}0"
   egress = false
-  protocol = "-1"
+  protocol = "tcp"
   rule_action = "deny"
   cidr_block = "${var.cidr_block_private_subnets[count.index]}"
   from_port = 0
-  to_port = 0
+  to_port = 1024
 }
 
 # Define Network Acl for Public subnets
