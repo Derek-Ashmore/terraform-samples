@@ -21,6 +21,12 @@ resource "aws_network_acl_rule" "privateSubnetsNetworkACLRuleStandardEgress" {
   protocol = "all"
 }
 
+/*
+ *  This is counter-intuitive in that it looks like I'm allowing internet access to
+ *  this "private" subnet. This rule is here so that *responses* to web resources via
+ *  the NAT gateway (e.g. "yum update") can be received.  What makes the "private" subnet not accessible
+ *  directly from the internet is the fact that it has no Internet Gateway associated with it.
+ */
 resource "aws_network_acl_rule" "privateSubnetsNetworkACLRuleDefaultIngress" {
   network_acl_id = "${aws_network_acl.privateSubnetsNetworkACL.id}"
   rule_number = 900
@@ -54,6 +60,12 @@ resource "aws_network_acl" "dmzSubnetsNetworkACL" {
 
 }
 
+/*
+ *  This is counter-intuitive in that it looks like I'm allowing internet access to
+ *  this "DMZ" subnet. This rule is here so that *responses* to web resources via
+ *  the NAT gateway (e.g. "yum update") can be received.  What makes the "DMZ" subnet not accessible
+ *  directly from the internet is the fact that it has no Internet Gateway associated with it.
+ */
 resource "aws_network_acl_rule" "dmzSubnetsNetworkACLRuleStandardEgress" {
   network_acl_id = "${aws_network_acl.dmzSubnetsNetworkACL.id}"
   rule_number = 100
